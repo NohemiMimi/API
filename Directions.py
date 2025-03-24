@@ -60,5 +60,19 @@ def getValvula():
         print("Error en control-valvula", e)
         return jsonify({"message": "Error interno del servidor"}), 500
 
+@app.route('/programar_riego', methods=['POST'])
+@cross_origin(allow_headers=['Content-Type'])
+def programar_riego():
+    try:
+        data = request.json
+        abrir = data.get("abrir")
+        cerrar = data.get("cerrar")
+        dias = data.get("dias")
+
+        return CallMethod.fnProgramarRiego(abrir, cerrar, dias)
+    except Exception as e:
+        print("Error en programar_riego:", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
+    
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)

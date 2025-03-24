@@ -69,3 +69,24 @@ def GetValvula():
         print("Error en GetValvula:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
     
+
+def fnProgramarRiego(abrir, cerrar, dias):
+    try:
+        if not abrir or not cerrar or not dias:
+            return jsonify({"message": "Faltan datos requeridos"}), 400
+
+        # Crear el documento para guardar en la base de datos
+        nuevo_registro = {
+            "abrir": abrir,
+            "cerrar": cerrar,
+            "dias": dias
+        }
+
+        # Guardar en la colección "programacion_riego"
+        dbProgramacion = Colabskey.dbconn["programacion_riego"]
+        dbProgramacion.insert_one(nuevo_registro)
+
+        return jsonify({"message": "Riego programado correctamente"}), 200
+    except Exception as e:
+        print("Error en fnProgramarRiego:", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
