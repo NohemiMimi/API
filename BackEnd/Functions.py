@@ -58,3 +58,14 @@ def control_valvula():
         print("Error en control_valvula:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
     
+def GetValvula():
+    try:
+        doc = dbValvula.find_one({}, {"estado": 1})
+        if doc and "estado" in doc:
+            return jsonify({"estado": doc["estado"]})
+        else:
+            return jsonify({"message": "No se encontró la válvula"}), 404
+    except Exception as e:
+        print("Error en GetValvula:", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
+    

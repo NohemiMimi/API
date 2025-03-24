@@ -40,12 +40,22 @@ def logueo():
         print("Error en logueo", e)
         return jsonify(ResponseMessages.err500)
 
+
 @app.route('/control-valvula', methods=['POST'])
 @cross_origin(allow_headers=['Content-Type'])
 def control_valvula():
     try:
         data = request.json
         return CallMethod.control_valvula()
+    except Exception as e:
+        print("Error en control-valvula", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
+
+@app.route('/GetValvula', methods=['GET'])
+@cross_origin(allow_headers=['Content-Type'])
+def getValvula():
+    try:
+        return CallMethod.GetValvula()
     except Exception as e:
         print("Error en control-valvula", e)
         return jsonify({"message": "Error interno del servidor"}), 500
