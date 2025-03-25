@@ -74,5 +74,21 @@ def programar_riego():
         print("Error en programar_riego:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
     
+@app.route('/humedad', methods=['POST'])
+@cross_origin(allow_headers=['Content-Type'])
+def recibir_humedad():
+    try:
+        data = request.json
+        humedad = data.get("humedad")
+
+        if humedad is None:
+            return jsonify({"message": "Falta el valor de humedad"}), 400
+
+        return CallMethod.guardar_humedad(humedad)
+
+    except Exception as e:
+        print("Error en recibir_humedad:", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
+    
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)

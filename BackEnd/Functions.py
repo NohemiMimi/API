@@ -90,3 +90,21 @@ def fnProgramarRiego(abrir, cerrar, dias):
     except Exception as e:
         print("Error en fnProgramarRiego:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
+    
+def guardar_humedad(humedad):
+    try:
+        # Conectar a la colección "humedad"
+        dbHumedad = Colabskey.dbconn["humedad"]
+
+        # Crear el documento a insertar
+        nuevo_registro = {
+            "humedad": humedad
+        }
+
+        # Insertar en la base de datos
+        dbHumedad.insert_one(nuevo_registro)
+
+        return jsonify({"message": "Dato de humedad guardado correctamente"}), 200
+    except Exception as e:
+        print("Error en guardar_humedad:", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
