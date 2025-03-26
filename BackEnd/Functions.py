@@ -13,6 +13,7 @@ if Colabskey.dbconn is None:
 
 dbUsuario = Colabskey.dbconn["usuario"]
 dbValvula = Colabskey.dbconn["estadoValvula"]
+dbProgRiego = Colabskey.dbconn["programacion_riego"]
 
 
 
@@ -81,7 +82,6 @@ def fnProgramarRiego(abrir, cerrar, dias):
             "cerrar": cerrar,
             "dias": dias
         }
-
         # Guardar en la colección "programacion_riego"
         dbProgramacion = Colabskey.dbconn["programacion_riego"]
         dbProgramacion.insert_one(nuevo_registro)
@@ -122,4 +122,25 @@ def obtener_humedad():
             return jsonify({"message": "No hay registros de humedad"}), 404
     except Exception as e:
         print("Error en obtener_humedad:", e)
+        return jsonify({"message": "Error interno del servidor"}), 
+
+def obtener_programacion_riego():
+    try:
+        # Conectar a la colección "programacion_riego"
+        dbProgramacion = Colabskey.dbconn["programacion_riego"]
+        
+        # Obtener todos los documentos
+        registros = list(dbProgramacion.find({}))
+        
+        # Convertir ObjectId a string y devolver los datos como JSON
+        registros_json = []
+        for registro in registros:
+            registro["_id"] = str(registro["_id"])
+            registros_json.append(registro)
+
+        return jsonify(registros_json), 200
+    except Exception as e:
+        print("Error en obtener_programacion_riego:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
+
+

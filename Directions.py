@@ -5,6 +5,7 @@ from flask_cors import CORS, cross_origin
 from BackEnd import Functions as CallMethod
 import BackEnd.GlobalInfo.ResponseMessages as ResponseMessages
 
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -74,6 +75,8 @@ def programar_riego():
         print("Error en programar_riego:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
     
+
+    
 @app.route('/humedad', methods=['POST'])
 @cross_origin(allow_headers=['Content-Type'])
 def recibir_humedad():
@@ -97,6 +100,15 @@ def obtener_humedad():
         return CallMethod.obtener_humedad()
     except Exception as e:
         print("Error en obtener_humedad:", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
+    
+@app.route('/programacion_riego', methods=['GET'])
+@cross_origin(allow_headers=['Content-Type'])
+def obtener_programacion_riego():
+    try:
+        return CallMethod.obtener_programacion_riego()
+    except Exception as e:
+        print("Error en obtener_programacion_riego:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
     
 if __name__ == '__main__':
