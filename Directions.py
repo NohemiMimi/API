@@ -90,5 +90,14 @@ def recibir_humedad():
         print("Error en recibir_humedad:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
     
+@app.route('/humedad', methods=['GET'])
+@cross_origin(allow_headers=['Content-Type'])
+def obtener_humedad():
+    try:
+        return CallMethod.obtener_humedad()
+    except Exception as e:
+        print("Error en obtener_humedad:", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
+    
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)

@@ -108,3 +108,18 @@ def guardar_humedad(humedad):
     except Exception as e:
         print("Error en guardar_humedad:", e)
         return jsonify({"message": "Error interno del servidor"}), 500
+    
+def obtener_humedad():
+    try:
+        dbHumedad = Colabskey.dbconn["humedad"]
+        
+        # Obtener el último registro ordenado por _id en orden descendente
+        ultimo_registro = dbHumedad.find_one({}, sort=[("_id", -1)])
+        
+        if ultimo_registro and "humedad" in ultimo_registro:
+            return jsonify({"humedad": ultimo_registro["humedad"]})
+        else:
+            return jsonify({"message": "No hay registros de humedad"}), 404
+    except Exception as e:
+        print("Error en obtener_humedad:", e)
+        return jsonify({"message": "Error interno del servidor"}), 500
